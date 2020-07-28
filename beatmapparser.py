@@ -248,12 +248,16 @@ class BeatmapParser():
     # Parse an event line
     # @param  {String} line
     def parse_event(self, line):
+        # to recover full events with storyboard, backup event lines
+        self.beatmap["events"].append(line)
+
         # Background line : 0,0,"bg.jpg"
         # TODO: confirm that the second member is always zero
         #
         # Breaktimes lines : 2,1000,2000
         # second integer is start offset
         # third integer is end offset
+
         members = line.split(',')
 
         if members[0] == '0' and members[1] == '0' and members[2]:
@@ -354,6 +358,7 @@ class BeatmapParser():
         if "Tags" in self.beatmap:
             self.beatmap["Tags"] = str(self.beatmap["Tags"]).split(" ")
 
+        self.beatmap["events"] = []
         for event_line in self.events_lines:
             self.parse_event(event_line)
         self.beatmap["breakTimes"].sort(key=lambda a, b: 1 if a.startTime > b.startTime else -1)
