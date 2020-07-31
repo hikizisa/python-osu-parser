@@ -114,7 +114,7 @@ class BeatmapParser():
 
         hit_object = {
             "startTime": int(members[2]),
-            "newCombo": object_type & 4,
+            "newCombo": (1 if object_type & 4 else 0) + (object_type % (2**7) // 2**4),
             "soundTypes": [],
             "position": [
                 int(members[0]),
